@@ -1,0 +1,73 @@
+buildscript {
+    ext {
+        versions = [
+                "dependency-management": "1.0.9.RELEASE",
+                "dokka"                : "0.10.1",
+                "jackson"              : "2.10.2",
+                "kotlin"               : "1.3.61",
+                "spring-boot"          : "2.2.5.RELEASE",
+        ]
+    }
+
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2"
+        }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versions["dokka"]}"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:${versions["kotlin"]}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions["kotlin"]}"
+        classpath "org.jetbrains.kotlin:kotlin-noarg:${versions["kotlin"]}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${versions["spring-boot"]}"
+        classpath "io.spring.gradle:dependency-management-plugin:${versions["dependency-management"]}"
+    }
+}
+
+allprojects {
+    group 'com.loyalty.nova'
+    version '1.0-SNAPSHOT'
+
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: "org.jetbrains.dokka"
+    apply plugin: "org.jetbrains.kotlin.jvm"
+    apply plugin: "org.jetbrains.kotlin.plugin.allopen"
+    apply plugin: "org.jetbrains.kotlin.plugin.noarg"
+    apply plugin: "org.jetbrains.kotlin.plugin.spring"
+    apply plugin: "org.springframework.boot"
+
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation(
+                "com.fasterxml.jackson.module:jackson-module-kotlin:${versions['jackson']}",
+                "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+                "org.reflections:reflections:0.9.12",
+        )
+    }
+
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+}
+
+subprojects {
+    jar {
+
+    }
+}
+
+dependencies {
+    implementation(
+            project(":gel-core"),
+    )
+}
